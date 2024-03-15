@@ -1,10 +1,13 @@
-const taskOptionsButton = document.getElementById('task-options-button');
-const taskOptionsDropdown = document.querySelector('.task-options-dropdown');
+const taskOptionsButtons = document.querySelectorAll('.task-options-button');
+const taskOptionsDropdowns = document.querySelectorAll('.task-options-dropdown');
 
-taskOptionsButton.addEventListener('click', () => {
-    taskOptionsDropdown.classList.toggle('visible')
+taskOptionsButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        button.parentNode.children[1].classList.toggle('visible')
+    })
 })
-
-taskOptionsDropdown.addEventListener('click', () => {
-    taskOptionsDropdown.classList.remove('visible')
+taskOptionsDropdowns.forEach(dropdown => {
+    dropdown.addEventListener('click', () => {
+        dropdown.classList.remove('visible')
+    })
 })

@@ -16,8 +16,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_133821) do
 
   create_table "tasks", force: :cascade do |t|
     t.string "name"
-    t.integer "start_time"
-    t.integer "end_time"
+    t.string "start_time"
+    t.string "end_time"
     t.integer "frequency", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

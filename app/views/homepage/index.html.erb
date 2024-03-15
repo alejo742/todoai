@@ -27,38 +27,40 @@
                     </div>
     
                     <div class="today-tasks">
+                        <% @tasks.each do |task| %>
                         <div class="task">
                             <div class="complete-round-checkbox">
-                                <div class="filling">
-                                    <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
-                                </div>
+                            <div class="filling">
+                                <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
+                            </div>
                             </div>
                             <div class="task-info">
-                                <div class="task-description">
-                                    <h4>Meeting</h4>
-                                    <span>14:00 - 17:00</span>
-                                </div>
-                                <div class="task-options">
-                                    <span id="task-options-button" class="material-symbols-outlined">
-                                        more_vert
+                            <div class="task-description">
+                                <h4><%= task.name %></h4>
+                                <span><%= format_time(task.start_time) %> - <%= format_time(task.end_time) %></span>
+                            </div>
+                            <div class="task-options">
+                                <span class="task-options-button material-symbols-outlined">
+                                    more_vert
+                                </span>
+                                <div class="task-options-dropdown">
+                                <span class="task-option delete-task-button">
+                                    <span class="material-symbols-outlined">
+                                        delete
                                     </span>
-                                    <div class="task-options-dropdown">
-                                        <span id="delete-task-button" class="task-option activable">
-                                            <span class="material-symbols-outlined">
-                                                delete
-                                            </span>
-                                            Delete Task
-                                        </span>
-                                        <span id="edit-task-button" class="task-option activable">
-                                            <span class="material-symbols-outlined">
-                                                edit
-                                            </span>
-                                            Edit Task
-                                        </span>
-                                    </div>
+                                    Delete Task
+                                </span>
+                                <span class="task-option delete-task-button">
+                                    <span class="material-symbols-outlined">
+                                        edit
+                                    </span>
+                                    Edit Task
+                                </span>
                                 </div>
                             </div>
+                            </div>
                         </div>
+                        <% end %>
                     </div>
     
                     <div class="today-help-offer">
