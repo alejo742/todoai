@@ -61,7 +61,7 @@ function setCurrentDate() {
             break;
     }
 
-    const dateHeader = document.querySelector('.today-header span');
+    const dateHeader = document.getElementById('today-date-header');
     dateHeader.innerHTML = `${dateMonth} ${dateNumber}${dateSuffix}`
 }
 setCurrentDate()

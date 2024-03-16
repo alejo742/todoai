@@ -26,43 +26,52 @@
                         <span>March 4th</span>
                     </div>
     
-                    <div class="today-tasks">
+                    <div class="today-tasks tasks-container">
                         <% @tasks.each do |task| %>
-                        <div class="task">
+                            <div class="task">
                             <div class="complete-round-checkbox">
-                            <div class="filling">
+                                <div class="filling">
                                 <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
-                            </div>
+                                </div>
                             </div>
                             <div class="task-info">
-                            <div class="task-description">
-                                <h4><%= task.name %></h4>
-                                <span><%= format_time(task.start_time) %> - <%= format_time(task.end_time) %></span>
-                            </div>
-                            <div class="task-options">
+                                <div class="task-description">
+                                <h4><%= task.task_name %></h4>
+                                <% if task.task_start_hour.present? && task.task_start_minute.present? && task.task_end_hour.present? && task.task_end_minute.present? %>
+                                    <span>
+                                        <%= format_time(task.task_start_hour) %><%= sprintf('%02d', task.task_start_minute) %> - <%= format_time(task.task_end_hour) %><%= sprintf('%02d', task.task_end_minute) %>
+                                    </span>
+
+                                <% elsif task.task_start_hour.present? && task.task_start_minute.present? %>
+                                    <span>
+                                        <%= format_time(task.task_start_hour) %><%= sprintf('%02d', task.task_start_minute) %>
+                                    </span>
+                                <% end %>
+                                </div>
+                                <div class="task-options">
                                 <span class="task-options-button material-symbols-outlined">
                                     more_vert
                                 </span>
                                 <div class="task-options-dropdown">
-                                <span class="task-option delete-task-button">
+                                    <span class="task-option delete-task-button">
                                     <span class="material-symbols-outlined">
                                         delete
                                     </span>
                                     Delete Task
-                                </span>
-                                <span class="task-option delete-task-button">
+                                    </span>
+                                    <span class="task-option delete-task-button">
                                     <span class="material-symbols-outlined">
                                         edit
                                     </span>
                                     Edit Task
-                                </span>
+                                    </span>
+                                </div>
                                 </div>
                             </div>
                             </div>
-                        </div>
                         <% end %>
                     </div>
-    
+
                     <div class="today-help-offer">
                         <button href="#">Need help? Try AI assistance</button>
                     </div>
@@ -121,48 +130,46 @@
                     close
                 </span>
                 <h3>Add Task</h3>
-                <form class="add-task-form">
+                <%= form_for(@task, url: { action: "create"}, html: { class: "add-task-form" }) do |f| %>
                     <div class="add-task-field-holder">
                         <div class="add-task-field">
-                            <label class="required" for="task-name-input">Name</label>
-                            <input placeholder="Water plants" type="text" id="task-name-input" name="task-name-input">
+                            <%= f.label :task_name, "Name", class: "required" %>
+                            <%= f.text_field :task_name, required: true %>
                         </div>
                     </div>
                     <div class="add-task-field-holder double">
                         <div class="add-task-field">
-                            <label for="task-start-input-hour">Start</label>
-                            <input class="time-input" type="number" placeholder="15" name="task-start-input-hour" id="task-start-input-hour" min="0">
+                            <%= f.label :task_start_hour %>
+                            <%= f.number_field :task_start_hour, min: 0, max: 23 %> <!-- Assuming 24-hour format -->
                         </div>
                         <span class="time-input-divider">:</span>
                         <div class="add-task-field">
-                            <label style="border-left: none;" for="task-start-input-minute">&nbsp;</label>
-                            <input class="time-input" type="number" placeholder="45" name="task-start-input-minute" id="task-start-input-minute" min="0">
+                            <%= f.label :task_start_minute %>
+                            <%= f.number_field :task_start_minute, min: 0, max: 59 %>
                         </div>
                     </div>
                     <div class="add-task-field-holder double">
                         <div class="add-task-field">
-                            <label for="task-end-input-hour">End</label>
-                            <input class="time-input" type="number" placeholder="17" name="task-end-input-hour" id="task-end-input-hour" min="0">
+                            <%= f.label :task_end_hour %>
+                            <%= f.number_field :task_end_hour, min: 0, max: 23 %>
                         </div>
                         <span class="time-input-divider">:</span>
                         <div class="add-task-field">
-                            <label style="border-left: none;" for="task-end-input-minute">&nbsp;</label>
-                            <input class="time-input" type="number" placeholder="00" name="task-end-input-minute" id="task-end-input-minute" min="0">
+                            <%= f.label :task_end_minute %>
+                            <%= f.number_field :task_end_minute, min: 0, max: 59 %>
                         </div>
                     </div>
                     <div class="add-task-field-holder">
                         <div class="add-task-field">
-                            <label class="required" for="task-repeat-input">Repeat</label>
-                            <select name="task-repeat-input" id="task-repeat-input">
-                                <option value="never" selected>Never</option>
-                                <option value="everyday">Everyday</option>
-                                <option value="weekdays">Weekdays</option>
-                                <option value="weekends">Weekends</option>
-                            </select>
+                            <%= f.label :task_frequency %>
+                            <%= f.select :task_frequency, [['Never', 'never'], ['Everyday', 'everyday'], ['Weekdays', 'weekdays'], ['Weekends', 'weekends']] %>
                         </div>
                     </div>
-                    <input id="add-task-submit" type="submit" value="Create task">
-                </form>
+                    <div id="add-task-submit" class="actions">
+                        <%= f.submit "Create task" %>
+                    </div>
+                <% end %>
+
             </div>
         </div>
 
@@ -181,5 +188,253 @@
             </div>
         </div>
     </main>
+
+    <!--all the js code-->
+    <script>
+        function taskChecking() {
+            //visual effects for checking tasks as complete
+            const taskCheckboxes = document.querySelectorAll('.complete-round-checkbox');
+            const tasksContainer = document.querySelector('.today-tasks');
+
+            taskCheckboxes.forEach(currentCheckbox => {
+                let taskWidget = currentCheckbox.parentNode
+                currentCheckbox.addEventListener('click', () => {
+                    currentCheckbox.classList.toggle('checked')
+                })
+            })
+        }
+        taskChecking()
+
+
+        function mainVisuals() {
+            const taskOptionsButtons = document.querySelectorAll('.task-options-button');
+            const taskOptionsDropdowns = document.querySelectorAll('.task-options-dropdown');
+
+            taskOptionsButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    button.parentNode.children[1].classList.toggle('visible')
+                })
+            })
+            taskOptionsDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', () => {
+                    dropdown.classList.remove('visible')
+                })
+            })
+
+            //making the padding of main section reactive
+            const appHeader = document.querySelector('.homescreen-header');
+            let headerHeight = appHeader.offsetHeight
+
+            const footerButton = document.querySelector('.floating-add-button');
+            let footerButtonHeight = footerButton.offsetHeight
+
+            const mainContainer = document.querySelector('.main-section-container');
+
+            mainContainer.style.paddingTop = `calc(${headerHeight}px + 3vh)`
+            mainContainer.style.paddingBottom = `calc(${footerButtonHeight}px + 3vh)`
+
+            const task = document.querySelector('.task')
+            const tasksContainer = document.querySelector('.tasks-container')
+            const helpOffer = document.querySelector('.today-help-offer')
+            if(!task)  {
+                tasksContainer.innerHTML = '<h5 class="nothing-heading">Nothing here!</h5>'
+                helpOffer.style.display = "none"
+            }
+        }
+        mainVisuals()
+
+
+        function taskAdding() {
+            const addTaskButton = document.querySelector('.floating-add-button button');
+            const addTaskOverlay = document.querySelector('.add-task-overlay');
+
+            addTaskButton.addEventListener('click', () => {
+                addTaskOverlay.classList.add('visible')
+            })
+
+            const closeAddPopup = document.querySelector('.close-add-task');
+            const addTaskForm = document.querySelector('.add-task-form');
+
+            closeAddPopup.addEventListener('click', () => {
+                addTaskOverlay.classList.remove('visible')
+                addTaskForm.reset()
+            })
+        }
+        taskAdding()
+
+
+        function calendarRendering() {
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            const calendarDays = document.getElementById('calendar-days');
+            const previousMonthButton = document.getElementById('calendar-month-previous')
+            const nextMonthButton = document.getElementById('calendar-month-next');
+            const visualMonth = document.querySelector('#calendar-month-current > span');
+
+
+            let currentDate = new Date()
+            let currentMonth = currentDate.getMonth()
+            let currentYear = currentDate.getFullYear()
+            let minMonth = new Date().getMonth()
+            let minYear = new Date().getFullYear()
+            let maxMonth = new Date().getMonth()
+            let maxYear = new Date().getFullYear()+1
+
+            function setCurrentDate() {
+                var dateNumber = currentDate.getDate()
+                var dateMonth = months[currentDate.getMonth()]
+                var dateSuffix = ""
+
+                function checkIfDateException(argDate) {
+                    if(argDate >= 11 && argDate <= 13) {
+                        return true
+                    }
+                    return false
+                }
+
+                switch (dateNumber.toString()[dateNumber.toString().length - 1]) {
+                    case "1":
+                        if(checkIfDateException(dateNumber)) {
+                            dateSuffix = "th"
+                        }
+                        else {
+                            dateSuffix = "st"
+                        }
+                        break;
+
+                    case "2":
+                        if(checkIfDateException(dateNumber)) {
+                            dateSuffix = "th"
+                        }
+                        else {
+                            dateSuffix = "nd"
+                        }
+
+                        break;
+
+                    case "3":
+                        if(checkIfDateException(dateNumber)) {
+                            dateSuffix = "th"
+                        }
+                        else {
+                            dateSuffix = "rd"
+                        }
+
+                        break;
+
+                    default:
+                        dateSuffix = "th"
+                        break;
+                }
+
+                const dateHeader = document.querySelector('.today-header span');
+                dateHeader.innerHTML = `${dateMonth} ${dateNumber}${dateSuffix}`
+            }
+            setCurrentDate()
+
+            function renderCalendarDays() {
+
+                currentDate.setDate(1)
+                let firstDay = new Date(currentYear, currentMonth, 1);
+                let lastDay = new Date (currentYear, currentMonth + 1, 0)
+                let lastDayDate = lastDay.getDate()
+                let lastDayIndex = lastDay.getDay()
+                let previousLastDay = new Date(currentYear, currentMonth, 0);
+                let previousLastDayDate = previousLastDay.getDate()
+                const nextDays = 7 - lastDayIndex -1;
+
+                visualMonth.innerHTML = `${months[currentMonth]} ${currentYear}`
+
+                let days = ""
+
+                for(let i = firstDay.getDay(); i > 0; i--) {
+                    days += `<span class="calendar-day last-month past">${previousLastDayDate - i + 1}</span>`
+                }
+
+                for(let i = 1; i <= lastDayDate; i++) {
+                    if(i === new Date().getDate() && 
+                    currentMonth === new Date().getMonth() &&
+                    currentYear === new Date().getFullYear()) {
+                        days += `<span class="calendar-day current">${i}</span>`
+                    }
+                    else {
+                        days += `<span class="calendar-day">${i}</span>`
+                    }
+                }
+
+                for(let i = 1; i <= nextDays; i++) {
+                    days += `<span class="calendar-day next-month">${i}</span>`
+                }
+
+                calendarDays.innerHTML = days
+
+
+                //selecting the days and clickability after rendering
+                var allCalendarDays = document.querySelectorAll('.calendar-day')
+                allCalendarDays.forEach(day => {
+                    day.addEventListener('click', () => {
+                        if(day.classList.contains('current') || day.classList.contains('last-month') || day.classList.contains('next-month')) {
+                            return
+                        }
+                        else {
+                            if(document.querySelector('.calendar-day.current')) {
+                                document.querySelector('.calendar-day.current').classList.remove('current')
+                            }
+                            day.classList.add('current')
+                        }
+                    })
+                }) 
+            }
+
+            renderCalendarDays();
+
+            nextMonthButton.addEventListener('click', () => {
+                previousMonthButton.classList.remove('forbidden')
+                if(currentYear < maxYear || currentMonth < maxMonth) {
+                    currentMonth ++
+                    if(currentMonth > 11) {
+                        currentMonth = 0
+                        currentYear++
+                    }
+                    renderCalendarDays()
+                }
+                if(currentYear == maxYear && currentMonth == maxMonth) {
+                    nextMonthButton.classList.add('forbidden')
+                }
+            })
+
+            previousMonthButton.addEventListener('click', () => {
+                nextMonthButton.classList.remove('forbidden')
+                if(currentYear > minYear || currentMonth > minMonth) {
+                    currentMonth --
+                    if(currentMonth < 0) {
+                        currentMonth = 11
+                        currentYear--
+                    }
+                    renderCalendarDays()
+                }
+                if(currentYear == minYear && currentMonth == minMonth) {
+                    previousMonthButton.classList.add('forbidden')
+                }
+            })
+        }
+        calendarRendering()
+
+
+        function aiAssistance() {
+            const aiButton = document.querySelector('.today-help-offer button');
+            const aiOverlay = document.querySelector('.ai-assist-overlay');
+
+            aiButton.addEventListener('click', () => {
+                aiOverlay.classList.add('visible')
+            })
+
+            const closeAiPopup = document.querySelector('.close-ai');
+            closeAiPopup.addEventListener('click', () => {
+                aiOverlay.classList.remove('visible')
+            })
+        }
+        aiAssistance()
+    </script>
 </body>
 </html>

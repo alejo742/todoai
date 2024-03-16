@@ -166,7 +166,6 @@ main {
 }
 .all-tasks-button {
     padding: 0.6rem 1.2rem;
-    background-color: #f5f5f5;
     border-radius: 1rem;
     display: flex;
     align-items: center;
@@ -235,6 +234,15 @@ main {
     display: grid;
     grid-auto-rows: 1fr;
     gap: 1.5rem;
+}
+.nothing-heading {
+    width: fit-content;
+    margin: min(5vh, 4rem) auto;
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    color: #484848;
+    font-weight: 300;
+    text-align: center;
 }
 .task {
     background-color: #fdfdfd;
@@ -644,7 +652,8 @@ main {
 .add-task-field input:focus, .add-task-field select:focus {
     outline: 2px solid #5471f1;
 }
-#add-task-submit /*submit button*/ {
+#add-task-submit input /*submit button*/ {
+    width: 100%;
     margin-top: 2rem;
     border: none;
     border-radius: 12px;
@@ -652,6 +661,11 @@ main {
     font-size: 1.4rem;
     background-color: #5471f1;
     color: #fff;
+    transition: all 0.3s;
+}
+#add-task-submit input:hover, #add-task-submit input:focus {
+    cursor: pointer;
+    opacity: 0.8;
 }
 
 /*ai assistance popup*/

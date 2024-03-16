@@ -15,10 +15,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_133821) do
   enable_extension "plpgsql"
 
   create_table "tasks", force: :cascade do |t|
-    t.string "name"
-    t.string "start_time"
-    t.string "end_time"
-    t.integer "frequency", default: 0
+    t.string "task_name"
+    t.string "task_start_hour"
+    t.string "task_start_minute"
+    t.string "task_end_hour"
+    t.string "task_end_minute"
+    t.string "task_frequency", default: "Never"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
