@@ -37,14 +37,14 @@
                             <div class="task-info">
                                 <div class="task-description">
                                 <h4><%= task.task_name %></h4>
-                                <% if task.task_start_hour.present? && task.task_start_minute.present? && task.task_end_hour.present? && task.task_end_minute.present? %>
+                                <% if task.task_start_hour.present? && task.task_end_hour.present? %>
                                     <span>
-                                        <%= format_time(task.task_start_hour) %><%= sprintf('%02d', task.task_start_minute) %> - <%= format_time(task.task_end_hour) %><%= sprintf('%02d', task.task_end_minute) %>
+                                    <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %> - <%= sprintf('%02d', task.task_end_hour.to_i) %>:<%= sprintf('%02d', task.task_end_minute.to_i) %>
                                     </span>
-
-                                <% elsif task.task_start_hour.present? && task.task_start_minute.present? %>
+                                    
+                                <% elsif task.task_start_hour.present? %>
                                     <span>
-                                        <%= format_time(task.task_start_hour) %><%= sprintf('%02d', task.task_start_minute) %>
+                                    <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %>
                                     </span>
                                 <% end %>
                                 </div>
@@ -53,18 +53,12 @@
                                     more_vert
                                 </span>
                                 <div class="task-options-dropdown">
-                                    <span class="task-option delete-task-button">
-                                    <span class="material-symbols-outlined">
-                                        delete
-                                    </span>
-                                    Delete Task
-                                    </span>
-                                    <span class="task-option delete-task-button">
-                                    <span class="material-symbols-outlined">
-                                        edit
-                                    </span>
-                                    Edit Task
-                                    </span>
+                                    <%= form_with(model: task, method: :delete, url: destroy_task_path(task), class: "task-option") do |form| %>
+                                        <%= form.submit class: "delete-task-button overlay-option-button", value: "" do %>
+                                        <% end %>
+                                        <span class="material-symbols-outlined">delete</span>
+                                        Delete Task
+                                    <% end %>
                                 </div>
                                 </div>
                             </div>
@@ -261,7 +255,6 @@
             })
         }
         taskAdding()
-
 
         function calendarRendering() {
             const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

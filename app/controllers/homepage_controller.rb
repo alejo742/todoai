@@ -15,6 +15,17 @@ class HomepageController < ApplicationController
     end
   end
 
+  def destroy
+    @task = Task.find(params[:id])
+    if @task.destroy
+      flash[:success] = "Task deleted successfully."
+      redirect_to root_path
+    else
+      flash[:error] = "Failed to delete task."
+      render :index # Render the index view again with the error messages
+    end
+  end
+
   private 
   
   def task_params
