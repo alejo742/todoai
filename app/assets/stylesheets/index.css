@@ -166,7 +166,6 @@ main {
 }
 .all-tasks-button {
     padding: 0.6rem 1.2rem;
-    background-color: #f5f5f5;
     border-radius: 1rem;
     display: flex;
     align-items: center;
@@ -235,6 +234,17 @@ main {
     display: grid;
     grid-auto-rows: 1fr;
     gap: 1.5rem;
+}
+.nothing-heading {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: min(5vh, 4rem) auto;
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    color: #484848;
+    font-weight: 300;
+    text-align: center;
 }
 .task {
     background-color: #fdfdfd;
@@ -317,6 +327,17 @@ main {
     align-items: center;
     padding: 1rem;
 }
+@-webkit-keyframes animateTaskOptionButton {
+    0% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: #e0e0e0;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
 @keyframes animateTaskOptionButton {
     0% {
         background-color: transparent;
@@ -335,7 +356,8 @@ main {
     cursor: pointer;
 }
 .task-options > span:focus, .task-options > span:hover {
-    animation: animateTaskOptionButton 0.4s;
+    -webkit-animation: animateTaskOptionButton 0.4s;
+            animation: animateTaskOptionButton 0.4s;
 }
 .task-options-dropdown {
     display: none;
@@ -354,6 +376,7 @@ main {
     display: flex;
 }
 .task-option {
+    position: relative;
     width: 100%;
     padding: 1.5rem 4rem 1.5rem 1.5rem;
     display: flex;
@@ -362,6 +385,10 @@ main {
     white-space: nowrap;
     font-size: 1.2rem;
     transition: all 0.2s;
+    border: none;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
 }
 .task-option:hover, .task-option:focus{
     cursor: pointer;
@@ -369,6 +396,16 @@ main {
 }
 .task-option > span {
     font-size: 1.6rem;
+}
+.overlay-option-button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    appearance: none;
+    position: absolute;
+    z-index: 1;
+    background-color: transparent;
+    cursor: pointer;
 }
 
 .today-help-offer {
@@ -378,8 +415,8 @@ main {
     align-items: center;
 }
 .today-help-offer button {
-    color: #5471f1;
     font-size: 1.3rem;
+    color: #5471f1;
     font-weight: 400;
     background-color: #f5f5f5;
     border: 1px solid #5471f1;
@@ -637,6 +674,8 @@ main {
 .time-input-divider {
     font-size: 2.2rem;
     font-weight: 600;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
     height: fit-content;
     text-align: center;
     padding: 1.1rem 0;
@@ -644,7 +683,8 @@ main {
 .add-task-field input:focus, .add-task-field select:focus {
     outline: 2px solid #5471f1;
 }
-#add-task-submit /*submit button*/ {
+#add-task-submit input /*submit button*/ {
+    width: 100%;
     margin-top: 2rem;
     border: none;
     border-radius: 12px;
@@ -652,6 +692,11 @@ main {
     font-size: 1.4rem;
     background-color: #5471f1;
     color: #fff;
+    transition: all 0.3s;
+}
+#add-task-submit input:hover, #add-task-submit input:focus {
+    cursor: pointer;
+    opacity: 0.8;
 }
 
 /*ai assistance popup*/
