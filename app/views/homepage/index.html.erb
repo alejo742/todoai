@@ -53,15 +53,71 @@
                                     more_vert
                                 </span>
                                 <div class="task-options-dropdown">
+                                    <!--delete button-->
                                     <%= form_with(model: task, method: :delete, url: destroy_task_path(task), class: "task-option") do |form| %>
                                         <%= form.submit class: "delete-task-button overlay-option-button", value: "" do %>
                                         <% end %>
                                         <span class="material-symbols-outlined">delete</span>
                                         Delete Task
                                     <% end %>
+
+                                    <!--edit button-->
+                                    <form class="task-option" onsubmit="event.preventDefault();">
+                                        <input type="submit" class="edit-task-button overlay-option-button" onclick="openEditForm(<%=task.id%>)" value="">
+                                        <span class="material-symbols-outlined">edit</span>
+                                        Edit Task
+                                    </form>
                                 </div>
                                 </div>
                             </div>
+                            </div>
+
+                            <div class="edit-task-overlay<%=task.id.to_s%> main-overlay">
+                                <div class="edit-task-popup main-popup">
+                                    <span class="material-symbols-outlined close-popup close-edit-task<%=task.id.to_s%>">
+                                        close
+                                    </span>
+                                    <h3>Edit Task</h3>
+                                    <%= form_with(model: task, method: :put, url: update_task_path(task), class: "edit-task-form task-form") do |f| %>
+                                        <div class="edit-task-field-holder task-field-holder">
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_name, "Name", class: "required" %>
+                                                <%= f.text_field :task_name, required: true %>
+                                            </div>
+                                        </div>
+                                        <div class="edit-task-field-holder task-field-holder double">
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_start_hour, class: "required" %>
+                                                <%= f.number_field :task_start_hour, min: 0, max: 23, required: true %> <!-- Assuming 24-hour format -->
+                                            </div>
+                                            <span class="time-input-divider">:</span>
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_start_minute %>
+                                                <%= f.number_field :task_start_minute, min: 0, max: 59 %>
+                                            </div>
+                                        </div>
+                                        <div class="edit-task-field-holder task-field-holder double">
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_end_hour, class: "required" %>
+                                                <%= f.number_field :task_end_hour, min: 0, max: 23, required: true%>
+                                            </div>
+                                            <span class="time-input-divider">:</span>
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_end_minute %>
+                                                <%= f.number_field :task_end_minute, min: 0, max: 59 %>
+                                            </div>
+                                        </div>
+                                        <div class="edit-task-field-holder task-field-holder">
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_frequency, class: "required" %>
+                                                <%= f.select :task_frequency, [['Never', 'never'], ['Everyday', 'everyday'], ['Weekdays', 'weekdays'], ['Weekends', 'weekends']], required: true %>
+                                            </div>
+                                        </div>
+                                        <div id="edit-task-submit" class="actions submit-button">
+                                            <%= f.submit "Edit task" %>
+                                        </div>
+                                    <% end %>
+                                </div>
                             </div>
                         <% end %>
                     </div>
@@ -124,46 +180,45 @@
                     close
                 </span>
                 <h3>Add Task</h3>
-                <%= form_for(@task, url: { action: "create"}, html: { class: "add-task-form" }) do |f| %>
-                    <div class="add-task-field-holder">
-                        <div class="add-task-field">
+                <%= form_for(@task, url: { action: "create"}, html: { class: "add-task-form task-form" }) do |f| %>
+                    <div class="add-task-field-holder task-field-holder">
+                        <div class="add-task-field task-field">
                             <%= f.label :task_name, "Name", class: "required" %>
                             <%= f.text_field :task_name, required: true %>
                         </div>
                     </div>
-                    <div class="add-task-field-holder double">
-                        <div class="add-task-field">
+                    <div class="add-task-field-holder task-field-holder double">
+                        <div class="add-task-field task-field">
                             <%= f.label :task_start_hour %>
-                            <%= f.number_field :task_start_hour, min: 0, max: 23 %> <!-- Assuming 24-hour format -->
+                            <%= f.number_field :task_start_hour, min: 0, max: 23 %>
                         </div>
                         <span class="time-input-divider">:</span>
-                        <div class="add-task-field">
+                        <div class="add-task-field task-field">
                             <%= f.label :task_start_minute %>
                             <%= f.number_field :task_start_minute, min: 0, max: 59 %>
                         </div>
                     </div>
-                    <div class="add-task-field-holder double">
-                        <div class="add-task-field">
+                    <div class="add-task-field-holder task-field-holder double">
+                        <div class="add-task-field task-field">
                             <%= f.label :task_end_hour %>
                             <%= f.number_field :task_end_hour, min: 0, max: 23 %>
                         </div>
                         <span class="time-input-divider">:</span>
-                        <div class="add-task-field">
+                        <div class="add-task-field task-field">
                             <%= f.label :task_end_minute %>
                             <%= f.number_field :task_end_minute, min: 0, max: 59 %>
                         </div>
                     </div>
-                    <div class="add-task-field-holder">
-                        <div class="add-task-field">
+                    <div class="add-task-field-holder task-field-holder">
+                        <div class="add-task-field task-field">
                             <%= f.label :task_frequency %>
                             <%= f.select :task_frequency, [['Never', 'never'], ['Everyday', 'everyday'], ['Weekdays', 'weekdays'], ['Weekends', 'weekends']] %>
                         </div>
                     </div>
-                    <div id="add-task-submit" class="actions">
+                    <div id="add-task-submit" class="actions submit-button">
                         <%= f.submit "Create task" %>
                     </div>
                 <% end %>
-
             </div>
         </div>
 
@@ -255,6 +310,17 @@
             })
         }
         taskAdding()
+
+        function openEditForm(taskId) {
+            console.log(`.edit-task-overlay${taskId}`)
+            document.querySelector(`.edit-task-overlay${taskId}`).classList.add('visible');
+
+            const closeBtn = document.querySelector(`.close-edit-task${taskId}`)
+            closeBtn.addEventListener('click', () => {
+                    closeBtn.parentNode.parentNode.classList.remove('visible')
+            })
+
+        }
 
         function calendarRendering() {
             const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

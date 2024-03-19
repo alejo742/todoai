@@ -6,8 +6,9 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   
   get 'homepage/index'
-  post 'homepage/tasks', to: 'homepage#create'
-  delete 'homepage/tasks/:id', to: 'homepage#destroy', as: 'destroy_task'
+  post 'homepage', to: 'homepage#create'
+  delete 'homepage/:id', to: 'homepage#destroy', as: 'destroy_task'
+  put '/homepage/:id', to: 'homepage#update', as: 'update_task'
 
   # Defines the root path route ("/")
   root "homepage#index"
