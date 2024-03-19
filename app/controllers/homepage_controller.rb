@@ -11,7 +11,7 @@ class HomepageController < ApplicationController
       redirect_to root_path
     else
       flash[:error] = "Failed to create task."
-      render :index # Render the index view again with the error messages
+      render :index
     end
   end
 
@@ -22,7 +22,18 @@ class HomepageController < ApplicationController
       redirect_to root_path
     else
       flash[:error] = "Failed to delete task."
-      render :index # Render the index view again with the error messages
+      render :index
+    end
+  end
+
+  def update
+    @task = Task.find(params[:id])
+    if @task.update(task_params)
+      flash[:success] = "Task created successfully."
+      redirect_to root_path
+    else
+      flash[:error] = "Failed to create task."
+      render :index
     end
   end
 
