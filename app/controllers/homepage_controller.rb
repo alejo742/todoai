@@ -40,6 +40,6 @@ class HomepageController < ApplicationController
   private 
   
   def task_params
-    params.require(:task).permit(:task_name, :task_start_hour, :task_start_minute, :task_end_hour, :task_end_minute, :task_frequency)
+    params.require(:task).permit(:task_name, :task_start_hour, :task_start_minute, :task_end_hour, :task_end_minute, :due_date, :task_frequency)
   end
 end
