@@ -20,6 +20,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_133821) do
     t.string "task_start_minute", default: "00"
     t.string "task_end_hour"
     t.string "task_end_minute", default: "00"
+    t.date "due_date"
     t.string "task_frequency", default: "Never"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

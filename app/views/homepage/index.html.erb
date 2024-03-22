@@ -11,15 +11,9 @@
         <div class="main-homescreen">
             <section class="homescreen-header">
                 <h1>My To-Do</h1>
-                <div class="all-tasks-button activable">
-                    <span class="material-symbols-outlined">
-                        apps
-                    </span>
-                    <p>All Tasks</p>
-                </div>
             </section>
 
-            <section class="main-section-container">
+            <section class="main-section-container" id="homepage-container">
                 <section class="main-section today-section">
                     <div class="main-card-header today-header">
                         <h2>Today</h2>
@@ -28,48 +22,49 @@
     
                     <div class="today-tasks tasks-container">
                         <% @tasks.each do |task| %>
+                            <% if task.due_date == nil || task.due_date.strftime("%Y-%m-%d") == Date.today.strftime("%Y-%m-%d") %>
                             <div class="task">
-                            <div class="complete-round-checkbox">
-                                <div class="filling">
-                                <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
+                                <div class="complete-round-checkbox">
+                                    <div class="filling">
+                                    <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="task-info">
-                                <div class="task-description">
-                                <h4><%= task.task_name %></h4>
-                                <% if task.task_start_hour.present? && task.task_end_hour.present? %>
-                                    <span>
-                                    <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %> - <%= sprintf('%02d', task.task_end_hour.to_i) %>:<%= sprintf('%02d', task.task_end_minute.to_i) %>
-                                    </span>
-                                    
-                                <% elsif task.task_start_hour.present? %>
-                                    <span>
-                                    <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %>
-                                    </span>
-                                <% end %>
-                                </div>
-                                <div class="task-options">
-                                <span class="task-options-button material-symbols-outlined">
-                                    more_vert
-                                </span>
-                                <div class="task-options-dropdown">
-                                    <!--delete button-->
-                                    <%= form_with(model: task, method: :delete, url: destroy_task_path(task), class: "task-option") do |form| %>
-                                        <%= form.submit class: "delete-task-button overlay-option-button", value: "" do %>
-                                        <% end %>
-                                        <span class="material-symbols-outlined">delete</span>
-                                        Delete Task
+                                <div class="task-info">
+                                    <div class="task-description">
+                                    <h4><%= task.task_name %></h4>
+                                    <% if task.task_start_hour.present? && task.task_end_hour.present? %>
+                                        <span>
+                                        <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %> - <%= sprintf('%02d', task.task_end_hour.to_i) %>:<%= sprintf('%02d', task.task_end_minute.to_i) %>
+                                        </span>
+                                        
+                                    <% elsif task.task_start_hour.present? %>
+                                        <span>
+                                        <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %>
+                                        </span>
                                     <% end %>
+                                    </div>
+                                    <div class="task-options">
+                                    <span class="task-options-button material-symbols-outlined">
+                                        more_vert
+                                    </span>
+                                    <div class="task-options-dropdown">
+                                        <!--delete button-->
+                                        <%= form_with(model: task, method: :delete, url: destroy_task_path(task), class: "task-option") do |form| %>
+                                            <%= form.submit class: "delete-task-button overlay-option-button", value: "" do %>
+                                            <% end %>
+                                            <span class="material-symbols-outlined">delete</span>
+                                            Delete Task
+                                        <% end %>
 
-                                    <!--edit button-->
-                                    <form class="task-option" onsubmit="event.preventDefault();">
-                                        <input type="submit" class="edit-task-button overlay-option-button" onclick="openEditForm(<%=task.id%>)" value="">
-                                        <span class="material-symbols-outlined">edit</span>
-                                        Edit Task
-                                    </form>
+                                        <!--edit button-->
+                                        <form class="task-option" onsubmit="event.preventDefault();">
+                                            <input type="submit" class="edit-task-button overlay-option-button" onclick="openEditForm(<%=task.id%>)" value="">
+                                            <span class="material-symbols-outlined">edit</span>
+                                            Edit Task
+                                        </form>
+                                    </div>
+                                    </div>
                                 </div>
-                                </div>
-                            </div>
                             </div>
 
                             <div class="edit-task-overlay<%=task.id.to_s%> main-overlay">
@@ -109,6 +104,127 @@
                                         </div>
                                         <div class="edit-task-field-holder task-field-holder">
                                             <div class="edit-task-field task-field">
+                                                <%= f.label :due_date, "Due for" %>
+                                                <%= f.date_field :due_date, class: "date-field" %>
+                                            </div>
+                                        </div>
+                                        <div class="edit-task-field-holder task-field-holder">
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_frequency, class: "required" %>
+                                                <%= f.select :task_frequency, [['Never', 'never'], ['Everyday', 'everyday'], ['Weekdays', 'weekdays'], ['Weekends', 'weekends']], required: true %>
+                                            </div>
+                                        </div>
+                                        <div id="edit-task-submit" class="actions submit-button">
+                                            <%= f.submit "Edit task" %>
+                                        </div>
+                                    <% end %>
+                                </div>
+                            </div>
+                            <% end %>
+                        <% end %>
+                    </div>
+
+                    <div class="today-help-offer">
+                        <button href="#">Need help? Try AI assistance</button>
+                    </div>
+                </section>
+    
+                <div class="main-section all-tasks-section">
+                    <div class="back-header">
+                        <h2>All Tasks</h2>
+                        <span class="material-symbols-outlined all-tasks-button">
+                            expand_more
+                        </span>
+                    </div>
+                    <div class="all-tasks">
+                        <% @tasks.each do |task| %>
+                            <div class="task">
+                                <div class="complete-round-checkbox">
+                                    <div class="filling">
+                                    <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="task-info">
+                                    <div class="task-description">
+                                    <h4><%= task.task_name %></h4>
+                                    <% if task.task_start_hour.present? && task.task_end_hour.present? %>
+                                        <span>
+                                        <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %> - <%= sprintf('%02d', task.task_end_hour.to_i) %>:<%= sprintf('%02d', task.task_end_minute.to_i) %>
+                                        </span>
+                                        
+                                    <% elsif task.task_start_hour.present? %>
+                                        <span>
+                                        <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %>
+                                        </span>
+                                    <% end %>
+                                    </div>
+                                    <div class="task-options">
+                                    <span class="task-options-button material-symbols-outlined">
+                                        more_vert
+                                    </span>
+                                    <div class="task-options-dropdown">
+                                        <!--delete button-->
+                                        <%= form_with(model: task, method: :delete, url: destroy_task_path(task), class: "task-option") do |form| %>
+                                            <%= form.submit class: "delete-task-button overlay-option-button", value: "" do %>
+                                            <% end %>
+                                            <span class="material-symbols-outlined">delete</span>
+                                            Delete Task
+                                        <% end %>
+
+                                        <!--edit button-->
+                                        <form class="task-option" onsubmit="event.preventDefault();">
+                                            <input type="submit" class="edit-task-button overlay-option-button" onclick="openEditForm(<%=task.id%>)" value="">
+                                            <span class="material-symbols-outlined">edit</span>
+                                            Edit Task
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="edit-task-overlay<%=task.id.to_s%> main-overlay">
+                                <div class="edit-task-popup main-popup">
+                                    <span class="material-symbols-outlined close-popup close-edit-task<%=task.id.to_s%>">
+                                        close
+                                    </span>
+                                    <h3>Edit Task</h3>
+                                    <%= form_with(model: task, method: :put, url: update_task_path(task), class: "edit-task-form task-form") do |f| %>
+                                        <div class="edit-task-field-holder task-field-holder">
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_name, "Name", class: "required" %>
+                                                <%= f.text_field :task_name, required: true %>
+                                            </div>
+                                        </div>
+                                        <div class="edit-task-field-holder task-field-holder double">
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_start_hour, class: "required" %>
+                                                <%= f.number_field :task_start_hour, min: 0, max: 23, required: true %> <!-- Assuming 24-hour format -->
+                                            </div>
+                                            <span class="time-input-divider">:</span>
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_start_minute %>
+                                                <%= f.number_field :task_start_minute, min: 0, max: 59 %>
+                                            </div>
+                                        </div>
+                                        <div class="edit-task-field-holder task-field-holder double">
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_end_hour, class: "required" %>
+                                                <%= f.number_field :task_end_hour, min: 0, max: 23, required: true%>
+                                            </div>
+                                            <span class="time-input-divider">:</span>
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :task_end_minute %>
+                                                <%= f.number_field :task_end_minute, min: 0, max: 59 %>
+                                            </div>
+                                        </div>
+                                        <div class="edit-task-field-holder task-field-holder">
+                                            <div class="edit-task-field task-field">
+                                                <%= f.label :due_date, "Due for" %>
+                                                <%= f.date_field :due_date, class: "date-field" %>
+                                            </div>
+                                        </div>
+                                        <div class="edit-task-field-holder task-field-holder">
+                                            <div class="edit-task-field task-field">
                                                 <%= f.label :task_frequency, class: "required" %>
                                                 <%= f.select :task_frequency, [['Never', 'never'], ['Everyday', 'everyday'], ['Weekdays', 'weekdays'], ['Weekends', 'weekends']], required: true %>
                                             </div>
@@ -121,12 +237,8 @@
                             </div>
                         <% end %>
                     </div>
+                </div>
 
-                    <div class="today-help-offer">
-                        <button href="#">Need help? Try AI assistance</button>
-                    </div>
-                </section>
-    
                 <section class="main-section calendar-section">
                     <div class="main-card-header calendar-header">
                         <h2>Calendar</h2>
@@ -211,6 +323,12 @@
                     </div>
                     <div class="add-task-field-holder task-field-holder">
                         <div class="add-task-field task-field">
+                            <%= f.label :due_date, "Due for" %>
+                            <%= f.date_field :due_date, class: "date-field" %>
+                        </div>
+                    </div>
+                    <div class="add-task-field-holder task-field-holder">
+                        <div class="add-task-field task-field">
                             <%= f.label :task_frequency %>
                             <%= f.select :task_frequency, [['Never', 'never'], ['Everyday', 'everyday'], ['Weekdays', 'weekdays'], ['Weekends', 'weekends']] %>
                         </div>
@@ -277,18 +395,31 @@
             const footerButton = document.querySelector('.floating-add-button');
             let footerButtonHeight = footerButton.offsetHeight
 
-            const mainContainer = document.querySelector('.main-section-container');
+            const mainContainers = document.querySelectorAll('.main-section-container');
+            mainContainers.forEach(mainContainer => {
+                mainContainer.style.paddingTop = `calc(${headerHeight}px + 3vh)`
+                mainContainer.style.paddingBottom = `calc(${footerButtonHeight}px + 3vh)`
+            })
+            
 
-            mainContainer.style.paddingTop = `calc(${headerHeight}px + 3vh)`
-            mainContainer.style.paddingBottom = `calc(${footerButtonHeight}px + 3vh)`
-
-            const task = document.querySelector('.task')
-            const tasksContainer = document.querySelector('.tasks-container')
+            const todayTask = document.querySelector('.today-tasks .task')
+            const todayTasksContainer = document.querySelector('.today-tasks')
             const helpOffer = document.querySelector('.today-help-offer')
-            if(!task)  {
-                tasksContainer.innerHTML = '<h5 class="nothing-heading">Nothing here!</h5>'
+            if(!todayTask)  {
+                todayTasksContainer.innerHTML = '<h5 class="nothing-heading">All done for today!</h5>'
                 helpOffer.style.display = "none"
             }
+            const allTask = document.querySelector('.all-tasks .task')
+            const allTasks = document.querySelector('.all-tasks')
+            if(!allTask)  {
+                allTasks.innerHTML = '<h5 class="nothing-heading">You do not have any tasks!</h5>'
+            }
+
+            const allTasksButton = document.querySelector('.all-tasks-button')
+            allTasksButton.addEventListener('click', () => {
+                allTasks.classList.toggle('active')
+                allTasksButton.classList.toggle('active')
+            })
         }
         mainVisuals()
 
@@ -312,7 +443,6 @@
         taskAdding()
 
         function openEditForm(taskId) {
-            console.log(`.edit-task-overlay${taskId}`)
             document.querySelector(`.edit-task-overlay${taskId}`).classList.add('visible');
 
             const closeBtn = document.querySelector(`.close-edit-task${taskId}`)
