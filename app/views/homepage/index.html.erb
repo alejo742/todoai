@@ -123,10 +123,6 @@
                             <% end %>
                         <% end %>
                     </div>
-
-                    <div class="today-help-offer">
-                        <button href="#">Need help? Try AI assistance</button>
-                    </div>
                 </section>
     
                 <div class="main-section all-tasks-section">
@@ -138,6 +134,7 @@
                     </div>
                     <div class="all-tasks">
                         <% @tasks.each do |task| %>
+                            <% if task.due_date.present? && task.due_date.strftime("%Y-%m-%d") != Date.today.strftime("%Y-%m-%d") %>
                             <div class="task">
                                 <div class="complete-round-checkbox">
                                     <div class="filling">
@@ -147,16 +144,22 @@
                                 <div class="task-info">
                                     <div class="task-description">
                                     <h4><%= task.task_name %></h4>
-                                    <% if task.task_start_hour.present? && task.task_end_hour.present? %>
+                                        <% if task.task_start_hour.present? && task.task_end_hour.present? %>
+                                            <span>
+                                            <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %> - <%= sprintf('%02d', task.task_end_hour.to_i) %>:<%= sprintf('%02d', task.task_end_minute.to_i) %>
+                                            </span>
+                                            
+                                        <% elsif task.task_start_hour.present? %>
+                                            <span>
+                                            <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %>
+                                            </span>
+                                        <% end %>
+                                        <% if task.due_date.present? %>
                                         <span>
-                                        <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %> - <%= sprintf('%02d', task.task_end_hour.to_i) %>:<%= sprintf('%02d', task.task_end_minute.to_i) %>
+                                            <span class="material-symbols-outlined">event</span>
+                                            <%= task.due_date.strftime("%B %e, %Y").gsub(/\s+/, ' ').strip %>
                                         </span>
-                                        
-                                    <% elsif task.task_start_hour.present? %>
-                                        <span>
-                                        <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %>
-                                        </span>
-                                    <% end %>
+                                        <% end %>
                                     </div>
                                     <div class="task-options">
                                     <span class="task-options-button material-symbols-outlined">
@@ -235,6 +238,7 @@
                                     <% end %>
                                 </div>
                             </div>
+                            <% end %>
                         <% end %>
                     </div>
                 </div>
@@ -404,15 +408,13 @@
 
             const todayTask = document.querySelector('.today-tasks .task')
             const todayTasksContainer = document.querySelector('.today-tasks')
-            const helpOffer = document.querySelector('.today-help-offer')
             if(!todayTask)  {
                 todayTasksContainer.innerHTML = '<h5 class="nothing-heading">All done for today!</h5>'
-                helpOffer.style.display = "none"
             }
             const allTask = document.querySelector('.all-tasks .task')
             const allTasks = document.querySelector('.all-tasks')
             if(!allTask)  {
-                allTasks.innerHTML = '<h5 class="nothing-heading">You do not have any tasks!</h5>'
+                allTasks.innerHTML = '<h5 class="nothing-heading">You do not have any other tasks!<br>(other than for today)</h5>'
             }
 
             const allTasksButton = document.querySelector('.all-tasks-button')
@@ -556,23 +558,6 @@
                 }
 
                 calendarDays.innerHTML = days
-
-
-                //selecting the days and clickability after rendering
-                var allCalendarDays = document.querySelectorAll('.calendar-day')
-                allCalendarDays.forEach(day => {
-                    day.addEventListener('click', () => {
-                        if(day.classList.contains('current') || day.classList.contains('last-month') || day.classList.contains('next-month')) {
-                            return
-                        }
-                        else {
-                            if(document.querySelector('.calendar-day.current')) {
-                                document.querySelector('.calendar-day.current').classList.remove('current')
-                            }
-                            day.classList.add('current')
-                        }
-                    })
-                }) 
             }
 
             renderCalendarDays();
@@ -608,22 +593,6 @@
             })
         }
         calendarRendering()
-
-
-        function aiAssistance() {
-            const aiButton = document.querySelector('.today-help-offer button');
-            const aiOverlay = document.querySelector('.ai-assist-overlay');
-
-            aiButton.addEventListener('click', () => {
-                aiOverlay.classList.add('visible')
-            })
-
-            const closeAiPopup = document.querySelector('.close-ai');
-            closeAiPopup.addEventListener('click', () => {
-                aiOverlay.classList.remove('visible')
-            })
-        }
-        aiAssistance()
     </script>
 </body>
 </html>
