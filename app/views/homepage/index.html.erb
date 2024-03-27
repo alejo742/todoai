@@ -23,10 +23,10 @@
                     <div class="today-tasks tasks-container">
                         <% @tasks.each do |task| %>
                             <% if task.due_date == nil || task.due_date.strftime("%Y-%m-%d") == Date.today.strftime("%Y-%m-%d") %>
-                            <div class="task">
+                            <div class="task taskId<%=task.id%>">
                                 <div class="complete-round-checkbox">
                                     <div class="filling">
-                                    <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
+                                        <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
                                     </div>
                                 </div>
                                 <div class="task-info">
@@ -82,8 +82,8 @@
                                         </div>
                                         <div class="edit-task-field-holder task-field-holder double">
                                             <div class="edit-task-field task-field">
-                                                <%= f.label :task_start_hour, class: "required" %>
-                                                <%= f.number_field :task_start_hour, min: 0, max: 23, required: true %> <!-- Assuming 24-hour format -->
+                                                <%= f.label :task_start_hour %>
+                                                <%= f.number_field :task_start_hour, min: 0, max: 23 %>
                                             </div>
                                             <span class="time-input-divider">:</span>
                                             <div class="edit-task-field task-field">
@@ -93,8 +93,8 @@
                                         </div>
                                         <div class="edit-task-field-holder task-field-holder double">
                                             <div class="edit-task-field task-field">
-                                                <%= f.label :task_end_hour, class: "required" %>
-                                                <%= f.number_field :task_end_hour, min: 0, max: 23, required: true%>
+                                                <%= f.label :task_end_hour %>
+                                                <%= f.number_field :task_end_hour, min: 0, max: 23 %>
                                             </div>
                                             <span class="time-input-divider">:</span>
                                             <div class="edit-task-field task-field">
@@ -135,10 +135,10 @@
                     <div class="all-tasks">
                         <% @tasks.each do |task| %>
                             <% if task.due_date.present? && task.due_date.strftime("%Y-%m-%d") != Date.today.strftime("%Y-%m-%d") %>
-                            <div class="task">
+                            <div class="task taskId<%=task.id%>">
                                 <div class="complete-round-checkbox">
                                     <div class="filling">
-                                    <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
+                                        <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
                                     </div>
                                 </div>
                                 <div class="task-info">
@@ -200,8 +200,8 @@
                                         </div>
                                         <div class="edit-task-field-holder task-field-holder double">
                                             <div class="edit-task-field task-field">
-                                                <%= f.label :task_start_hour, class: "required" %>
-                                                <%= f.number_field :task_start_hour, min: 0, max: 23, required: true %> <!-- Assuming 24-hour format -->
+                                                <%= f.label :task_start_hour %>
+                                                <%= f.number_field :task_start_hour, min: 0, max: 23 %>
                                             </div>
                                             <span class="time-input-divider">:</span>
                                             <div class="edit-task-field task-field">
@@ -211,8 +211,8 @@
                                         </div>
                                         <div class="edit-task-field-holder task-field-holder double">
                                             <div class="edit-task-field task-field">
-                                                <%= f.label :task_end_hour, class: "required" %>
-                                                <%= f.number_field :task_end_hour, min: 0, max: 23, required: true%>
+                                                <%= f.label :task_end_hour %>
+                                                <%= f.number_field :task_end_hour, min: 0, max: 23%>
                                             </div>
                                             <span class="time-input-divider">:</span>
                                             <div class="edit-task-field task-field">
@@ -343,40 +343,10 @@
                 <% end %>
             </div>
         </div>
-
-        <div class="ai-assist-overlay main-overlay">
-            <div class="ai-assist-popup main-popup">
-                <span class="material-symbols-outlined close-popup close-ai">
-                    close
-                </span>
-                <h3>Boost your productivity with <strong>AI.</strong> Prepare your day.</h3>
-                <div class="ai-description">
-                    <span class="material-symbols-outlined close-ai">
-                        fact_check
-                    </span>
-                    <p>Let the AI organize your activities and suggest courses of action, with just a few clicks.</p>
-                </div>
-            </div>
-        </div>
     </main>
 
     <!--all the js code-->
     <script>
-        function taskChecking() {
-            //visual effects for checking tasks as complete
-            const taskCheckboxes = document.querySelectorAll('.complete-round-checkbox');
-            const tasksContainer = document.querySelector('.today-tasks');
-
-            taskCheckboxes.forEach(currentCheckbox => {
-                let taskWidget = currentCheckbox.parentNode
-                currentCheckbox.addEventListener('click', () => {
-                    currentCheckbox.classList.toggle('checked')
-                })
-            })
-        }
-        taskChecking()
-
-
         function mainVisuals() {
             const taskOptionsButtons = document.querySelectorAll('.task-options-button');
             const taskOptionsDropdowns = document.querySelectorAll('.task-options-dropdown');
@@ -425,6 +395,19 @@
         }
         mainVisuals()
 
+        function taskCompletion() {
+            const taskCheckingForms = document.querySelectorAll('.complete-task-form')
+            const visualCheckboxes = document.querySelectorAll('.complete-round-checkbox');
+            const hiddenCheckboxes = document.querySelectorAll('.complete-hidden-checkbox');
+            
+            visualCheckboxes.forEach((checkbox, checkboxIndex) => {
+                checkbox.addEventListener('click', () => {
+                    checkbox.classList.toggle('checked')
+                    hiddenCheckboxes[checkboxIndex].checked = !hiddenCheckboxes
+                })
+            })
+        }
+        taskCompletion()
 
         function taskAdding() {
             const addTaskButton = document.querySelector('.floating-add-button button');

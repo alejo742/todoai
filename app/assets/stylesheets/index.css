@@ -235,6 +235,9 @@ main {
     align-items: center;
     gap: 1.5rem;
 }
+.complete-hidden-checkbox {
+    display: none;
+}
 .complete-round-checkbox {
     position: relative;
     aspect-ratio: 1/1;
@@ -656,9 +659,6 @@ main {
     cursor: pointer;
     opacity: 0.8;
 }
-
-/*ai assistance popup*/
-
 
 /*all tasks screen*/
 .all-tasks-section {
