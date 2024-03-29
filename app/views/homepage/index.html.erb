@@ -24,7 +24,7 @@
                         <% @tasks.each do |task| %>
                             <% if task.due_date == nil || task.due_date.strftime("%Y-%m-%d") == Date.today.strftime("%Y-%m-%d") %>
                             <div class="task taskId<%=task.id%>">
-                                <div class="complete-round-checkbox">
+                                <div class="complete-round-checkbox taskId<%=task.id%>">
                                     <div class="filling">
                                         <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
                                     </div>
@@ -47,7 +47,7 @@
                                     <span class="task-options-button material-symbols-outlined">
                                         more_vert
                                     </span>
-                                    <div class="task-options-dropdown">
+                                    <div class="task-options-dropdown taskId<%=task.id%>">
                                         <!--delete button-->
                                         <%= form_with(model: task, method: :delete, url: destroy_task_path(task), class: "task-option") do |form| %>
                                             <%= form.submit class: "delete-task-button overlay-option-button", value: "" do %>
@@ -136,14 +136,14 @@
                         <% @tasks.each do |task| %>
                             <% if task.due_date.present? && task.due_date.strftime("%Y-%m-%d") != Date.today.strftime("%Y-%m-%d") %>
                             <div class="task taskId<%=task.id%>">
-                                <div class="complete-round-checkbox">
+                                <div class="complete-round-checkbox taskId<%=task.id%>">
                                     <div class="filling">
                                         <img crossorigin="anonymous" referrerpolicy="no-referrer" src="https://static.vecteezy.com/system/resources/thumbnails/021/815/666/small/single-icon-of-checklist-free-png.png" alt="">
                                     </div>
                                 </div>
                                 <div class="task-info">
                                     <div class="task-description">
-                                    <h4><%= task.task_name %></h4>
+                                        <h4><%= task.task_name %></h4>
                                         <% if task.task_start_hour.present? && task.task_end_hour.present? %>
                                             <span>
                                             <%= sprintf('%02d', task.task_start_hour.to_i) %>:<%= sprintf('%02d', task.task_start_minute.to_i) %> - <%= sprintf('%02d', task.task_end_hour.to_i) %>:<%= sprintf('%02d', task.task_end_minute.to_i) %>
@@ -165,7 +165,7 @@
                                     <span class="task-options-button material-symbols-outlined">
                                         more_vert
                                     </span>
-                                    <div class="task-options-dropdown">
+                                    <div class="task-options-dropdown taskId<%=task.id%>">
                                         <!--delete button-->
                                         <%= form_with(model: task, method: :delete, url: destroy_task_path(task), class: "task-option") do |form| %>
                                             <%= form.submit class: "delete-task-button overlay-option-button", value: "" do %>
@@ -396,14 +396,39 @@
         mainVisuals()
 
         function taskCompletion() {
-            const taskCheckingForms = document.querySelectorAll('.complete-task-form')
+            const taskCheckingForms = document.querySelectorAll('.complete-task-form');
             const visualCheckboxes = document.querySelectorAll('.complete-round-checkbox');
-            const hiddenCheckboxes = document.querySelectorAll('.complete-hidden-checkbox');
             
             visualCheckboxes.forEach((checkbox, checkboxIndex) => {
+                let checkboxId = `${checkbox.classList[1]}`
                 checkbox.addEventListener('click', () => {
                     checkbox.classList.toggle('checked')
-                    hiddenCheckboxes[checkboxIndex].checked = !hiddenCheckboxes
+
+                    let checkedStatus = checkbox.classList.contains('checked')
+                    if(localStorage.getItem(checkboxId)) {
+                        localStorage.removeItem(checkboxId)
+                        localStorage.setItem(checkboxId, `${checkedStatus}`)
+                    }
+                    else {
+                        localStorage.setItem(checkboxId, `${checkedStatus}`)
+                    }
+                })
+
+                //set value of checkboxes to the stored value
+                if(localStorage.getItem(checkboxId) == "true") {
+                    checkbox.classList.add('checked')
+                }
+                else {
+                    checkbox.classList.remove('checked')
+                }
+            })
+
+            //delet unused storage
+            const deleteButtons = document.querySelectorAll('delete-task-button');
+            deleteButtons.forEach(button => {
+                let deleteId = button.parent.classList[1]
+                button.addEventListener('click', () => {
+                    localStorage.removeItem(deleteId)
                 })
             })
         }
