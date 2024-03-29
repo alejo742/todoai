@@ -8,9 +8,6 @@
     --colorTertiary: #5471f1;
 }
 
-*{
-    font-family: 'Outfit', 'Manrope', 'Poppins', 'Nunito', sans-serif;
-}
 @-webkit-keyframes wiggleButton {
     0% {
         transform: none;
