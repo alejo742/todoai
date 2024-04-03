@@ -10,6 +10,8 @@
     <main>
         <div class="main-form-container">
             <%= form_with(url: login_path, method: :post, local: true, class: "main-login-form main-session-form") do |form| %>
+                <h1>Log in</h1>
+
                 <div class="session-input-holder">
                     <%= form.label :username %>
                     <%= form.text_field :username %>
@@ -20,7 +22,11 @@
                     <%= form.password_field :password %>
                 </div>
 
-                <%= form.submit "Login" %>
+                <%= form.submit "Log in" %>
+
+                <div class="session-invitation register-invitation">
+                    <span>Need an account? <a href=" <%= signup_path %> ">Register</a></span>
+                </div>
             <% end %>
         </div>
     </main>

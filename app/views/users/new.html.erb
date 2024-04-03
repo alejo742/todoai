@@ -9,7 +9,9 @@
 <body>
     <main>
         <div class="main-form-container">
-            <%= form_with(model: @user, url: registration_path, method: :post, class: "main-login-form main-session-form") do |form| %>
+            <%= form_with(model: @user, url: signup_path, method: :post, class: "main-login-form main-session-form") do |form| %>
+                <h1>Register</h1>
+
                 <div class="session-input-holder">
                     <%= form.label :username %>
                     <%= form.text_field :username %>
@@ -21,11 +23,15 @@
                 </div>
 
                 <div class="session-input-holder">
-                    <%= form.label :password_confirmation %>
+                    <%= form.label :password_confirmation, "Confirm password" %>
                     <%= form.password_field :password_confirmation %>
                 </div>
 
                 <%= form.submit "Register" %>
+
+                <div class="session-invitation login-invitation">
+                    <span>Already have an account? <a href=" <%= login_path %> ">Log in</a></span>
+                </div>
             <% end %>
         </div>
     </main>

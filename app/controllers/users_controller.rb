@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       flash[:success] = "User successfully registered."
-      redirect_to root_path # Redirect to the homepage or login page
+      redirect_to login_path # Redirect to the homepage or login page
     else
       render :new
     end

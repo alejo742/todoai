@@ -1,5 +1,5 @@
 class HomepageController < ApplicationController
-  before_action :require_login, except: [:index, :show]
+  before_action :require_login
 
   def index
     @task = Task.new
@@ -42,8 +42,9 @@ class HomepageController < ApplicationController
   private 
   
   def task_params
-    params.require(:task).permit(:task_name, :task_start_hour, :task_start_minute, :task_end_hour, :task_end_minute, :due_date, :task_frequency)
+    params.require(:task).permit(:task_name, :task_start_hour, :task_start_minute, :task_end_hour, :task_end_minute, :due_date, :task_frequency).merge(user_id: current_user.id)
   end
+  
 
   private
   
