@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_15_133821) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_29_165102) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_133821) do
     t.string "task_end_minute", default: "00"
     t.date "due_date"
     t.string "task_frequency", default: "Never"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

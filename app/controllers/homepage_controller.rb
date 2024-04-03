@@ -1,11 +1,13 @@
 class HomepageController < ApplicationController
+  before_action :require_login, except: [:index, :show]
+
   def index
     @task = Task.new
-    @tasks = Task.all
+    @tasks = current_user.tasks.where("due_date IS NULL OR due_date = ?", Date.today)
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
     if @task.save
       flash[:success] = "Task created successfully."
       redirect_to root_path
@@ -16,7 +18,7 @@ class HomepageController < ApplicationController
   end
 
   def destroy
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
     if @task.destroy
       flash[:success] = "Task deleted successfully."
       redirect_to root_path
@@ -27,12 +29,12 @@ class HomepageController < ApplicationController
   end
 
   def update
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
     if @task.update(task_params)
-      flash[:success] = "Task created successfully."
+      flash[:success] = "Task updated successfully."
       redirect_to root_path
     else
-      flash[:error] = "Failed to create task."
+      flash[:error] = "Failed to update task."
       render :index
     end
   end
@@ -41,5 +43,14 @@ class HomepageController < ApplicationController
   
   def task_params
     params.require(:task).permit(:task_name, :task_start_hour, :task_start_minute, :task_end_hour, :task_end_minute, :due_date, :task_frequency)
+  end
+
+  private
+  
+  def require_login
+    unless current_user
+      flash[:error] = "You must be logged in to access this page."
+      redirect_to login_path
+    end
   end
 end
