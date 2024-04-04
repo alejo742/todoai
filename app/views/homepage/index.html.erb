@@ -11,6 +11,10 @@
         <div class="main-homescreen">
             <section class="homescreen-header">
                 <h1>My To-Do</h1>
+                <%= button_to logout_path, method: :delete, class: "logout-button" do %>
+                    <span class="material-symbols-outlined">logout</span>
+                    Log Out
+                <% end %>
             </section>
 
             <section class="main-section-container" id="homepage-container">
