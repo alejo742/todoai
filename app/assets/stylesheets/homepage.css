@@ -158,6 +158,26 @@ main {
     font-weight: 500;
     color: #000000;
 }
+.logout-button {
+    padding: 1rem 2rem;
+    background-color: #5471f1;
+    color: #fdfdfd;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    border: none;
+    transition: all 0.2s;
+}
+.logout-button:hover, .logout-button:focus {
+    cursor: pointer;
+    opacity: 0.8;
+}
+.logout-button span {
+    font-size: 1.8rem;
+}
 
 .main-section-container {
     position: relative;

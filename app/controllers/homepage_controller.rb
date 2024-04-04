@@ -39,17 +39,18 @@ class HomepageController < ApplicationController
     end
   end
 
-  private 
-  
-  def task_params
-    params.require(:task).permit(:task_name, :task_start_hour, :task_start_minute, :task_end_hour, :task_end_minute, :due_date, :task_frequency).merge(user_id: current_user.id)
-  end
-  
 
+  private 
+
+  def task_params
+    params.require(:task).permit(:task_name, :task_start_hour, :task_start_minute, :task_end_hour, :task_end_minute, :due_date, :task_frequency)
+  end
+
+  
   private
   
   def require_login
-    unless current_user
+    unless session[:user_id]
       flash[:error] = "You must be logged in to access this page."
       redirect_to login_path
     end
