@@ -13,14 +13,20 @@
                 <h1>Log in</h1>
 
                 <div class="session-input-holder">
-                    <%= form.label :username %>
-                    <%= form.text_field :username %>
+                    <%= form.label :username, class: "required" %>
+                    <%= form.text_field :username, required: true %>
                 </div>
                 
                 <div class="session-input-holder">
-                    <%= form.label :password %>
-                    <%= form.password_field :password %>
+                    <%= form.label :password, class: "required" %>
+                    <%= form.password_field :password, required: true %>
                 </div>
+
+                <% if flash[:alert] %>
+                    <div class="session-alert session-alert-danger">
+                    <%= flash[:alert] %>
+                    </div>
+                <% end %>
 
                 <%= form.submit "Log in" %>
 

@@ -53,7 +53,7 @@ main {
     color: #5471f1;
     font-weight: 700;
 }
-.session-input-holder input, .session-input-holder select {
+.session-input-holder input{
     width: 100%;
     display: block;
     padding: 1rem;
@@ -63,9 +63,17 @@ main {
     border-radius: 8px;
     text-overflow: ellipsis;
 }
-.session-input-holder input:focus, .session-input-holder select:focus {
+.session-input-holder input:focus {
     outline: 2px solid #5471f1;
 }
+
+.session-alert {
+    color: red;
+    font-size: 1.2rem;
+    display: flex;
+    width: 100%;
+}
+
 .main-session-form input[type="submit"] /*submit button*/ {
     width: 100%;
     margin-top: 1rem;

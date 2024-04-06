@@ -3,14 +3,14 @@ class HomepageController < ApplicationController
 
   def index
     @task = Task.new
-    @tasks = current_user.tasks.where("due_date IS NULL OR due_date = ?", Date.today)
+    @tasks = current_user.tasks
   end
 
   def create
     @task = current_user.tasks.build(task_params)
     if @task.save
       flash[:success] = "Task created successfully."
-      redirect_to root_path
+      redirect_to homepage_path
     else
       flash[:error] = "Failed to create task."
       render :index
@@ -21,7 +21,7 @@ class HomepageController < ApplicationController
     @task = current_user.tasks.find(params[:id])
     if @task.destroy
       flash[:success] = "Task deleted successfully."
-      redirect_to root_path
+      redirect_to homepage_path
     else
       flash[:error] = "Failed to delete task."
       render :index
@@ -32,7 +32,7 @@ class HomepageController < ApplicationController
     @task = current_user.tasks.find(params[:id])
     if @task.update(task_params)
       flash[:success] = "Task updated successfully."
-      redirect_to root_path
+      redirect_to homepage_path
     else
       flash[:error] = "Failed to update task."
       render :index
