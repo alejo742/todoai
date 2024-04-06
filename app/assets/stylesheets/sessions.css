@@ -1,0 +1,118 @@
+body {
+    background-color: #fdfdfd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+main {
+    position: relative;
+    background-color: #fdfdfd;
+    height: 100svh;
+    width: min(600px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.main-form-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5471f1;
+}
+.main-session-form {
+    padding: 8rem 3rem;
+    width: 90%;
+    background-color: #fdfdfd;
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+}
+.main-session-form h1 {
+    margin-bottom: 2rem;
+    font-size: 3rem;
+}
+.session-input-holder {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+.session-input-holder label {
+    font-size: 1.4rem;
+    font-weight: 500;
+    padding-left: 0.5rem;
+    border-left: 2px solid #5471f1;
+}
+.session-input-holder label.required::after {
+    margin-left: 0.5rem;
+    content:"*\00a0";
+    color: #5471f1;
+    font-weight: 700;
+}
+.session-input-holder input{
+    width: 100%;
+    display: block;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    text-overflow: ellipsis;
+}
+.session-input-holder input:focus {
+    outline: 2px solid #5471f1;
+}
+
+.session-alert {
+    color: red;
+    font-size: 1.2rem;
+    display: flex;
+    width: 100%;
+}
+
+.main-session-form input[type="submit"] /*submit button*/ {
+    width: 100%;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 8px;
+    padding: 1.5rem;
+    font-size: 1.4rem;
+    background-color: #5471f1;
+    color: #fff;
+    transition: all 0.3s;
+}
+.main-session-form input[type="submit"]:hover, .main-session-form input[type="submit"]:focus {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.session-invitation {
+    margin-top: 1.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.session-invitation span {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #484848;
+}
+.session-invitation span a {
+    font-size: inherit;
+    font-weight: inherit;
+    text-decoration: underline;
+    color: #5471f1;
+    transition: all 0.2s;
+}
+.session-invitation span a:hover .session-invitation span a:focus {
+    opacity: 0.75;
+}
+.session-invitation span a:visited {
+    color: #5471f1;
+    text-decoration: none;
+}
