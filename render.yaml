@@ -10,8 +10,6 @@ services:
     runtime: ruby
     plan: free
     buildCommand: "./bin/render-build.sh"
-    runCommands:
-      - command: "bundle exec rails db:migrate"
     startCommand: "bundle exec rails server"
     envVars:
       - key: DATABASE_URL
