@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: todoai_production
-  username: <%= Rails.application.credentials.dig(:development, :database, :username) %>
+  username: todoai
   password: <%= Rails.application.credentials.dig(:development, :database, :password) %>
