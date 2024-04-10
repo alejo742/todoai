@@ -22,9 +22,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_03_212437) do
     t.string "task_end_minute", default: "00"
     t.date "due_date"
     t.string "task_frequency", default: "Never"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
